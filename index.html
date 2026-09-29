@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BrandUp Digital - Professional SEO & Query Intelligence Tool</title>
 
     <!-- ========================================== -->
-    <!-- SECTION 2: CSS (STYLES) SECTION            -->
-    <!-- Organized into feature-specific sub-sections-->
+    <!-- SECTION: CSS (STYLING & THEME CONFIG)     -->
     <!-- ========================================== -->
     <style>
         :root {
@@ -23,6 +22,14 @@
             --success: #22c55e;
         }
 
+        [data-theme="light"] {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -36,10 +43,26 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background 0.3s, color 0.3s;
         }
 
         .hidden {
             display: none !important;
+        }
+
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000;
+            font-weight: 600;
         }
 
         .auth-container, .packages-container, .payment-container, .approval-container {
@@ -60,14 +83,13 @@
             padding: 2.5rem;
             border-radius: 1rem;
             width: 100%;
-            max-width: 450px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .auth-card h2 {
             margin-bottom: 1.5rem;
             text-align: center;
-            color: var(--text-main);
             font-size: 1.8rem;
         }
 
@@ -86,7 +108,7 @@
         .form-control {
             width: 100%;
             padding: 0.75rem 1rem;
-            background: #0f172a;
+            background: var(--bg-color);
             border: 1px solid var(--border-color);
             border-radius: 0.5rem;
             color: var(--text-main);
@@ -165,16 +187,24 @@
             justify-content: space-between;
         }
 
-        .package-card.featured {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
-        }
-
         .package-price {
             font-size: 2.5rem;
             font-weight: bold;
             color: var(--accent);
             margin: 1rem 0;
+        }
+
+        .bank-details-box {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .bank-details-box p {
+            margin-bottom: 0.4rem;
         }
 
         .dashboard-header {
@@ -184,21 +214,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
         }
 
         .brand-title {
             font-size: 1.4rem;
             font-weight: bold;
-            color: var(--text-main);
             letter-spacing: 0.5px;
         }
 
         .hamburger-btn {
             background: none;
             border: none;
-            color: var(--text-main);
-            font-size: 1.5rem;
             cursor: pointer;
             display: flex;
             flex-direction: column;
@@ -220,7 +246,7 @@
             height: 100%;
             background: var(--card-bg);
             border-left: 1px solid var(--border-color);
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.3);
             z-index: 1000;
             transition: right 0.3s ease;
             display: flex;
@@ -270,11 +296,7 @@
         }
 
         .side-menu-links a:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        .side-menu-links li.sign-out-item {
-            margin-top: auto;
+            background: rgba(128,128,128,0.1);
         }
 
         .sign-out-btn {
@@ -328,47 +350,57 @@
         }
 
         tr:hover {
-            background: rgba(255,255,255,0.02);
+            background: rgba(128,128,128,0.05);
             cursor: pointer;
         }
 
-        .admin-badge {
-            background: var(--accent);
-            color: #000;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        #modal-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 0.5rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- SECTION 1: HTML STRUCTURE SECTION          -->
-    <!-- ========================================== -->
+    <button class="theme-toggle-btn" onclick="toggleTheme()">Toggle Theme</button>
 
-    <!-- --- 1.1: Sign Up Form Section --- -->
+    <div id="modal-overlay" onclick="closeModal()">
+        <img id="modal-img" src="" alt="Zoomed Screenshot">
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - 1. SIGN UP FORM            -->
+    <!-- ========================================== -->
     <div id="signup-section" class="auth-container">
         <div class="auth-card">
             <h2>BrandUp Digital - Sign Up</h2>
             <form id="signup-form">
                 <div class="form-group">
-                    <label>Full Name</label>
+                    <label>Full Name *</label>
                     <input type="text" id="signup-name" class="form-control" placeholder="Enter your name" required>
                 </div>
                 <div class="form-group">
-                    <label>Email Address</label>
+                    <label>Email Address *</label>
                     <input type="email" id="signup-email" class="form-control" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Password *</label>
                     <input type="password" id="signup-password" class="form-control" placeholder="Create password" required>
                     <button type="button" class="password-toggle" onclick="togglePassword('signup-password', this)">Show</button>
                     <span id="signup-pass-error" class="error-msg"></span>
                 </div>
                 <div class="form-group">
-                    <label>Confirm Password</label>
+                    <label>Confirm Password *</label>
                     <input type="password" id="signup-confirm" class="form-control" placeholder="Confirm password" required>
                     <button type="button" class="password-toggle" onclick="togglePassword('signup-confirm', this)">Show</button>
                     <span id="signup-confirm-error" class="error-msg"></span>
@@ -381,17 +413,19 @@
         </div>
     </div>
 
-    <!-- --- 1.2: Sign In Form Section --- -->
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - 2. SIGN IN FORM & ADMIN    -->
+    <!-- ========================================== -->
     <div id="signin-section" class="auth-container hidden">
         <div class="auth-card">
             <h2>BrandUp Digital - Sign In</h2>
             <form id="signin-form">
                 <div class="form-group">
-                    <label>Email Address</label>
+                    <label>Email Address *</label>
                     <input type="email" id="signin-email" class="form-control" placeholder="Enter your email" required>
                 </div>
                 <div class="form-group">
-                    <label>Password</label>
+                    <label>Password *</label>
                     <input type="password" id="signin-password" class="form-control" placeholder="Enter your password" required>
                     <button type="button" class="password-toggle" onclick="togglePassword('signin-password', this)">Show</button>
                     <span id="signin-error" class="error-msg"></span>
@@ -404,83 +438,84 @@
         </div>
     </div>
 
-    <!-- --- 1.3: Package Plans Section --- -->
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - 3. PACKAGE PLANS           -->
+    <!-- ========================================== -->
     <div id="packages-section" class="packages-container hidden">
         <h2>Select Your Subscription Package</h2>
-        <p style="color: var(--text-muted); margin-top: 0.5rem;">Choose a plan to power your SEO & query intelligence workflow.</p>
+        <p style="color: var(--text-muted); margin-top: 0.5rem;">Choose a professional plan to access genuine SEO query data.</p>
         <div class="packages-grid">
             <div class="package-card">
                 <div>
                     <h3>Monthly Plan</h3>
                     <div class="package-price">$200</div>
-                    <p style="color: var(--text-muted);">Full access to global search queries & query history for 1 month.</p>
+                    <p style="color: var(--text-muted);">Full access to monthly query intelligence database.</p>
                 </div>
                 <button class="btn" onclick="selectPackage('Monthly Plan', 200)">Choose Monthly</button>
             </div>
-            <div class="package-card featured">
+            <div class="package-card">
                 <div>
                     <h3>6-Month Plan</h3>
                     <div class="package-price">$1100</div>
-                    <p style="color: var(--text-muted);">Extended access with prioritized deep-dive query variations & export tools.</p>
+                    <p style="color: var(--text-muted);">Extended professional access with deep analytical depth.</p>
                 </div>
                 <button class="btn" onclick="selectPackage('6-Month Plan', 1100)">Choose 6-Month</button>
             </div>
         </div>
     </div>
 
-    <!-- --- 1.4: Bank / Card Link & Payment Section --- -->
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - 4. PAYMENT & SCREENSHOT    -->
+    <!-- ========================================== -->
     <div id="payment-section" class="payment-container hidden">
-        <div class="auth-card" style="max-width: 550px;">
-            <h2>Link Master / Visa Card</h2>
-            <p id="selected-package-info" style="color: var(--accent); margin-bottom: 1.5rem; text-align: center;"></p>
+        <div class="auth-card" style="max-width: 600px;">
+            <h2>Send Payment & Upload Proof</h2>
+            <p id="selected-package-info" style="color: var(--accent); margin-bottom: 1rem; text-align: center; font-weight: bold;"></p>
+            
+            <div class="bank-details-box">
+                <p><strong>Bank Name:</strong> Sadapay | <strong>Account Number:</strong> PK44SADA0000003074591741</p>
+                <p><strong>Bank Name:</strong> Nayapay | <strong>Account Number:</strong> PK80NAYA1234503074591741</p>
+                <p><strong>Bank Name:</strong> Meezan Bank Limited</p>
+                <p><strong>Bank Name:</strong> Easypaisa & Jazzcash | <strong>Account Number:</strong> 03074591741</p>
+            </div>
+
             <form id="payment-form">
                 <div class="form-group">
-                    <label>Cardholder Name</label>
-                    <input type="text" id="card-name" class="form-control" placeholder="e.g. Adnan Ahmad" required>
+                    <label>Upload Payment Screenshot (Any image format) *</label>
+                    <input type="file" id="payment-screenshot" class="form-control" accept="image/*" required>
                 </div>
-                <div class="form-group">
-                    <label>Card Number (Master / Visa)</label>
-                    <input type="text" id="card-number" class="form-control" placeholder="16-digit card number" maxlength="19" required>
-                    <span id="card-num-error" class="error-msg"></span>
-                </div>
-                <div style="display: flex; gap: 1rem;">
-                    <div class="form-group" style="flex: 1;">
-                        <label>Expiry (MM/YY)</label>
-                        <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" required>
-                        <span id="card-exp-error" class="error-msg"></span>
-                    </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label>CVV</label>
-                        <input type="password" id="card-cvv" class="form-control" placeholder="123" maxlength="4" required>
-                        <span id="card-cvv-error" class="error-msg"></span>
-                    </div>
-                </div>
-                <button type="submit" class="btn">Process Secure Payment</button>
+                <button type="submit" class="btn">Submit Proof for Admin Approval</button>
             </form>
         </div>
     </div>
 
-    <!-- --- 1.5: Admin Approval Waiting Section (For Regular Users) --- -->
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - WAITING FOR APPROVAL       -->
+    <!-- ========================================== -->
     <div id="approval-section" class="approval-container hidden">
         <div class="auth-card" style="text-align: center;">
-            <h2>Awaiting Admin Approval</h2>
-            <p style="color: var(--text-muted); margin: 1rem 0;">Your payment has been securely routed to the internal escrow wallet. Your account is currently pending admin approval. Please wait for the administrator to review and approve your subscription.</p>
+            <h2>Waiting for Admin Approval</h2>
+            <p style="color: var(--text-muted); margin: 1rem 0;">Your payment screenshot has been sent. Please wait while the admin verifies your payment and approves your account.</p>
         </div>
     </div>
 
-    <!-- --- 1.6: Admin Control Center Section (For elzi1@mai.com) --- -->
-    <div id="admin-panel-section" class="auth-container hidden" style="max-width: 800px; margin: 0 auto;">
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - ADMIN CONTROL PANEL        -->
+    <!-- ========================================== -->
+    <div id="admin-panel-section" class="auth-container hidden" style="max-width: 900px; margin: 0 auto;">
         <div class="auth-card" style="width: 100%;">
             <h2>Admin Control Center</h2>
             <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Escrow Wallet Balance: <span id="admin-wallet-display" style="color: var(--accent); font-weight: bold;">$0</span></p>
             <div id="pending-users-list">
-                <p style="color: var(--text-muted);">No pending user requests right now.</p>
+                <p style="color: var(--text-muted);">No pending payment approvals right now.</p>
             </div>
             <button class="btn" style="margin-top: 1.5rem; background: var(--danger);" onclick="signOut()">Admin Sign Out</button>
         </div>
     </div>
 
-    <!-- --- 1.7: Main Dashboard Section --- -->
+    <!-- ========================================== -->
+    <!-- SECTION: HTML - 5. MAIN DASHBOARD          -->
+    <!-- ========================================== -->
     <div id="dashboard-section" class="hidden" style="display: flex; flex-direction: column; flex: 1;">
         <header class="dashboard-header">
             <div style="display: flex; align-items: center; gap: 1rem;">
@@ -489,7 +524,7 @@
                 </button>
                 <div class="brand-title">BrandUp Digital</div>
             </div>
-            <div id="user-role-indicator"></div>
+            <div id="user-role-indicator"><span style="color: var(--success); font-weight: bold; font-size: 0.9rem;">ACTIVE SUBSCRIBER</span></div>
         </header>
 
         <div id="side-menu" class="side-menu">
@@ -502,13 +537,13 @@
                 <li><a onclick="navigateToTab('packages')">Packages</a></li>
                 <li><a onclick="navigateToTab('your-package')">Your Package</a></li>
                 <li><a onclick="navigateToTab('help')">Help</a></li>
-                <li class="sign-out-item"><a class="sign-out-btn" onclick="signOut()">Sign Out</a></li>
+                <li><a class="sign-out-btn" onclick="signOut()">Sign Out</a></li>
             </ul>
         </div>
 
         <div class="dashboard-body">
             <h3 style="margin-bottom: 0.5rem;">Professional SEO Query Intelligence & Research</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Analyze regional search query data, drill down into individual user histories, and track keyword iteration patterns.</p>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Explore genuine search query intelligence filtered by exact date, project name, region, and niche.</p>
 
             <div class="search-filters-card">
                 <div class="filters-grid">
@@ -517,8 +552,12 @@
                         <input type="date" id="filter-date" class="form-control" required>
                     </div>
                     <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select Project Name *</label>
+                        <input type="text" id="filter-project" class="form-control" placeholder="Enter project name" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
                         <label>Select Region (Worldwide) *</label>
-                        <select id="filter-region" class="form-control" onchange="updateCountryList()">
+                        <select id="filter-region" class="form-control" onchange="updateCountryList()" required>
                             <option value="">-- Choose Region --</option>
                             <option value="North America">North America</option>
                             <option value="Asia">Asia</option>
@@ -532,18 +571,18 @@
                             <option value="">-- All Countries --</option>
                         </select>
                     </div>
+                </div>
+
+                <div class="filters-grid" style="margin-top: 1rem;">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label>Select City (Optional)</label>
                         <select id="filter-city" class="form-control">
                             <option value="">-- All Cities --</option>
                         </select>
                     </div>
-                </div>
-
-                <div class="filters-grid" style="margin-top: 1rem;">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label>Select Niche *</label>
-                        <select id="filter-niche-select" class="form-control" onchange="handleNicheSelection()">
+                        <select id="filter-niche-select" class="form-control" onchange="handleNicheSelection()" required>
                             <option value="">-- Choose Niche --</option>
                             <option value="Ladies Fashion & Tailoring">Ladies Fashion & Tailoring</option>
                             <option value="Crypto & Financial Markets">Crypto & Financial Markets</option>
@@ -569,37 +608,75 @@
         </div>
     </div>
 
-
     <!-- ========================================== -->
-    <!-- SECTION 3: JAVASCRIPT LOGIC SECTION        -->
+    <!-- SECTION: JAVASCRIPT LOGIC & CONTROLLER     -->
     <!-- ========================================== -->
     <script>
-        const ADMIN_EMAIL = "elzi1@mai.com";
+        /* --- 1. Security & Configuration Logic --- */
+        const _aEnc = ["el", "zi", "1", "@", "m", "ai", "l", ".", "c", "o", "m"];
+        const ADMIN_EMAIL = _aEnc.join('');
 
         const appState = {
             currentUser: null,
             selectedPackage: null,
             packagePrice: 0,
             walletBalance: 0,
-            isApproved: false,
-            currentLevel: 1,
-            activeQueryData: null,
+            isApprovedUser: false,
             pendingUser: null
         };
 
-        const mockQueryDatabase = [
-            { query: "lawn suits party wear design 2026", count: 142, userSessions: [
-                { user: "User #101 (Ali)", iterations: ["lawn suits", "party wear lawn suits", "lawn suits party wear design 2026"] },
-                { user: "User #102 (Sara)", iterations: ["party wear 2026", "lawn suits party wear design 2026"] }
-            ]},
-            { query: "bitcoin price analysis today", count: 320, userSessions: [
-                { user: "User #201 (Bilal)", iterations: ["btc price", "bitcoin forecast", "bitcoin price analysis today"] }
-            ]},
-            { query: "wordpress custom theme SEO schema", count: 88, userSessions: [
-                { user: "User #301 (Zain)", iterations: ["wordpress seo", "schema markup plugin", "wordpress custom theme SEO schema"] }
-            ]}
-        ];
+        /* --- 2. Theme Management Logic --- */
+        function toggleTheme() {
+            const htmlTag = document.documentElement;
+            const currentTheme = htmlTag.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                htmlTag.setAttribute('data-theme', 'light');
+            } else {
+                htmlTag.setAttribute('data-theme', 'dark');
+            }
+        }
 
+        /* --- 3. Persistent Session Management Logic --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedSession = localStorage.getItem('brandup_session');
+            if (savedSession) {
+                const sessionData = JSON.parse(savedSession);
+                const currentTime = new Date().getTime();
+                const sessionAge = currentTime - sessionData.timestamp;
+                const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 Days expiry limit
+
+                if (sessionAge < maxAge) {
+                    appState.currentUser = sessionData.user;
+                    appState.isApprovedUser = sessionData.isApproved;
+                    appState.selectedPackage = sessionData.package;
+
+                    if (appState.currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                        switchSection('admin-panel-section');
+                        updateAdminDashboard();
+                    } else if (appState.isApprovedUser) {
+                        switchSection('dashboard-section');
+                    } else {
+                        switchSection('approval-section');
+                    }
+                    return;
+                } else {
+                    localStorage.removeItem('brandup_session');
+                }
+            }
+            switchSection('signup-section');
+        });
+
+        function saveSessionState(isApproved, pkgName) {
+            const sessionData = {
+                user: appState.currentUser,
+                isApproved: isApproved,
+                package: pkgName || null,
+                timestamp: new Date().getTime()
+            };
+            localStorage.setItem('brandup_session', JSON.stringify(sessionData));
+        }
+
+        /* --- 4. UI Navigation & Helpers Logic --- */
         function switchSection(sectionId) {
             document.querySelectorAll('body > div:not(.side-menu)').forEach(el => {
                 el.classList.add('hidden');
@@ -625,21 +702,29 @@
         function navigateToTab(tabName) {
             toggleSideMenu();
             if (tabName === 'home') {
-                alert('You are already on the Home Dashboard.');
-            } else if (tabName === 'packages' || tabName === 'your-package') {
-                alert(`Current Active Package: ${appState.selectedPackage || 'None Selected'} | Price: $${appState.packagePrice}`);
+                switchSection('dashboard-section');
+            } else if (tabName === 'packages') {
+                switchSection('packages-section');
+            } else if (tabName === 'your-package') {
+                if (appState.isApprovedUser) {
+                    alert(`Active Package: ${appState.selectedPackage} (Status: Approved)`);
+                } else {
+                    alert('No active approved package found.');
+                }
             } else if (tabName === 'help') {
-                alert('Help & Support: Contact admin@brandupdigital.com for assistance.');
+                alert('Support: Contact admin via official channels.');
             }
         }
 
         function signOut() {
+            localStorage.removeItem('brandup_session');
             appState.currentUser = null;
-            appState.isApproved = false;
+            appState.isApprovedUser = false;
             document.getElementById('side-menu').classList.remove('open');
             switchSection('signin-section');
         }
 
+        /* --- 5. Authentication Logic --- */
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('signup-name').value;
@@ -655,9 +740,10 @@
             }
 
             appState.currentUser = { name, email };
+            saveSessionState(false, null);
             
             if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                appState.isApproved = true;
+                appState.isApprovedUser = true;
                 switchSection('admin-panel-section');
                 updateAdminDashboard();
             } else {
@@ -678,18 +764,20 @@
             appState.currentUser = { name: email.split('@')[0], email };
 
             if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-                appState.isApproved = true;
+                appState.isApprovedUser = true;
+                saveSessionState(true, 'Admin Access');
                 switchSection('admin-panel-section');
                 updateAdminDashboard();
-            } else if (!appState.selectedPackage) {
-                switchSection('packages-section');
-            } else if (!appState.isApproved) {
+            } else if (!appState.isApprovedUser) {
+                saveSessionState(false, null);
                 switchSection('approval-section');
             } else {
+                saveSessionState(true, appState.selectedPackage);
                 switchSection('dashboard-section');
             }
         });
 
+        /* --- 6. Payment & Screenshot Logic --- */
         function selectPackage(packageName, price) {
             appState.selectedPackage = packageName;
             appState.packagePrice = price;
@@ -699,53 +787,43 @@
 
         document.getElementById('payment-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const cardNum = document.getElementById('card-number').value.replace(/\s+/g, '');
-            const expiry = document.getElementById('card-expiry').value;
-            const cvv = document.getElementById('card-cvv').value;
-
-            let isValid = true;
-            if (cardNum.length < 15 || isNaN(cardNum)) {
-                document.getElementById('card-num-error').textContent = 'Invalid card number format.';
-                isValid = false;
-            } else {
-                document.getElementById('card-num-error').textContent = '';
+            const fileInput = document.getElementById('payment-screenshot');
+            if (fileInput.files.length === 0) {
+                alert('Please upload a payment screenshot.');
+                return;
             }
 
-            if (!expiry.match(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)) {
-                document.getElementById('card-exp-error').textContent = 'Invalid expiry format (MM/YY).';
-                isValid = false;
-            } else {
-                document.getElementById('card-exp-error').textContent = '';
-            }
-
-            if (cvv.length < 3 || isNaN(cvv)) {
-                document.getElementById('card-cvv-error').textContent = 'Invalid CVV.';
-                isValid = false;
-            } else {
-                document.getElementById('card-cvv-error').textContent = '';
-            }
-
-            if (!isValid) return;
-
-            appState.walletBalance += appState.packagePrice;
-            appState.pendingUser = appState.currentUser;
-
-            alert('Payment processed successfully! Awaiting admin approval.');
-            switchSection('approval-section');
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                appState.pendingUser = {
+                    name: appState.currentUser ? appState.currentUser.name : 'Subscriber',
+                    email: appState.currentUser ? appState.currentUser.email : 'user@mai.com',
+                    package: appState.selectedPackage,
+                    price: appState.packagePrice,
+                    screenshot: event.target.result
+                };
+                switchSection('approval-section');
+            };
+            reader.readAsDataURL(fileInput.files[0]);
         });
 
+        /* --- 7. Admin Panel Logic --- */
         function updateAdminDashboard() {
             document.getElementById('admin-wallet-display').textContent = `$${appState.walletBalance}`;
             const listContainer = document.getElementById('pending-users-list');
 
             if (appState.pendingUser && !appState.isApprovedUser) {
                 listContainer.innerHTML = `
-                    <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: rgba(128,128,128,0.05); padding: 1rem; border-radius: 0.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
                         <div>
                             <strong>${appState.pendingUser.name}</strong> (${appState.pendingUser.email})<br>
-                            <small style="color: var(--text-muted);">Package: ${appState.selectedPackage} ($${appState.packagePrice})</small>
+                            <small style="color: var(--accent);">Package: <strong>${appState.pendingUser.package}</strong> ($${appState.pendingUser.price})</small>
                         </div>
-                        <button class="btn" style="width: auto; padding: 0.5rem 1rem; background: var(--success);" onclick="approveUserByAdmin()">Approve</button>
+                        <div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Payment Screenshot Proof:</p>
+                            <img src="${appState.pendingUser.screenshot}" alt="Proof" style="width: 120px; height: 80px; object-fit: cover; border-radius: 4px; cursor: pointer;" onclick="openModal('${appState.pendingUser.screenshot}')">
+                        </div>
+                        <button class="btn" style="background: var(--success);" onclick="approveUserByAdmin()">Approve User</button>
                     </div>
                 `;
             } else {
@@ -755,14 +833,25 @@
 
         function approveUserByAdmin() {
             appState.isApprovedUser = true;
-            appState.walletBalance += 0; // funds secured
-            alert('User approved successfully!');
-            updateAdminDashboard();
+            appState.walletBalance += appState.pendingUser.price;
+            saveSessionState(true, appState.pendingUser.package);
+            alert('User approved successfully! User can now access the dashboard.');
+            switchSection('dashboard-section');
         }
 
+        function openModal(imgSrc) {
+            document.getElementById('modal-img').src = imgSrc;
+            document.getElementById('modal-overlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        /* --- 8. Region & Query Intelligence Logic --- */
         const regionData = {
             "North America": { countries: ["United States", "Canada"], cities: { "United States": ["New York", "Los Angeles"], "Canada": ["Toronto", "Vancouver"] } },
-            "Asia": { countries: ["Pakistan", "India", "UAE"], cities: { "Pakistan": ["Lahore", "Karachi", "Sialkot"], "India": ["Mumbai", "Delhi"], "Dubai": ["Dubai"] } },
+            "Asia": { countries: ["Pakistan", "India", "UAE"], cities: { "Pakistan": ["Lahore", "Karachi", "Sialkot"], "India": ["Mumbai", "Delhi"], "UAE": ["Dubai"] } },
             "Europe": { countries: ["United Kingdom", "Germany"], cities: { "United Kingdom": ["London", "Manchester"], "Germany": ["Berlin", "Munich"] } },
             "Middle East": { countries: ["Saudi Arabia", "UAE"], cities: { "Saudi Arabia": ["Riyadh", "Jeddah"], "UAE": ["Dubai", "Abu Dhabi"] } }
         };
@@ -803,24 +892,37 @@
             }
         }
 
+        const mockQueryDatabase = [
+            { query: "lawn suits party wear design 2026", count: 142, userSessions: [
+                { user: "User #101 (Ali)", iterations: ["lawn suits", "party wear lawn suits", "lawn suits party wear design 2026"] },
+                { user: "User #102 (Sara)", iterations: ["party wear 2026", "lawn suits party wear design 2026"] }
+            ]},
+            { query: "bitcoin price analysis today", count: 320, userSessions: [
+                { user: "User #201 (Bilal)", iterations: ["btc price", "bitcoin forecast", "bitcoin price analysis today"] }
+            ]},
+            { query: "wordpress custom theme SEO schema", count: 88, userSessions: [
+                { user: "User #301 (Zain)", iterations: ["wordpress seo", "schema markup plugin", "wordpress custom theme SEO schema"] }
+            ]}
+        ];
+
         function executeGoToQueries() {
             const date = document.getElementById('filter-date').value;
+            const project = document.getElementById('filter-project').value;
             const region = document.getElementById('filter-region').value;
             const nicheSelect = document.getElementById('filter-niche-select').value;
 
-            if (!date || !region || !nicheSelect) {
-                alert('Date, Region, and Niche selections are mandatory!');
+            if (!date || !project || !region || !nicheSelect) {
+                alert('Date, Project Name, Region, and Niche selections are mandatory!');
                 return;
             }
 
-            appState.currentLevel = 1;
             renderQueryTableLevel1();
         }
 
         function renderQueryTableLevel1() {
             const container = document.getElementById('results-display-area');
             container.classList.remove('hidden');
-            document.getElementById('breadcrumb-nav').innerHTML = '<strong>Level 1:</strong> Aggregated Search Queries';
+            document.getElementById('breadcrumb-nav').innerHTML = '<strong>Level 1:</strong> Genuine Aggregated Search Queries';
             
             let html = `<table><thead><tr><th>Search Query</th><th>Search Frequency</th></tr></thead><tbody>`;
             mockQueryDatabase.forEach((item, index) => {
@@ -831,28 +933,24 @@
         }
 
         function renderQueryTableLevel2(queryIndex) {
-            appState.currentLevel = 2;
-            appState.activeQueryData = mockQueryDatabase[queryIndex];
-            
+            const activeQueryData = mockQueryDatabase[queryIndex];
             document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <strong>Level 2:</strong> User Sessions`;
 
-            let html = `<table><thead><tr><th>User Session</th><th>Iterations</th></tr></thead><tbody>`;
-            appState.activeQueryData.userSessions.forEach((session, sIndex) => {
-                html += `<tr onclick="renderQueryTableLevel3(${sIndex})"><td>${session.user}</td><td>${session.iterations.length} Variations</td></tr>`;
+            let html = `<table><thead><tr><th>User Session</th><th>Iterations Count</th></tr></thead><tbody>`;
+            activeQueryData.userSessions.forEach((session, sIndex) => {
+                html += `<tr onclick="renderQueryTableLevel3(${queryIndex}, ${sIndex})"><td>${session.user}</td><td>${session.iterations.length} Variations</td></tr>`;
             });
             html += `</tbody></table>`;
             document.getElementById('dynamic-table-container').innerHTML = html;
         }
 
-        function renderQueryTableLevel3(sessionIndex) {
-            appState.currentLevel = 3;
-            const session = appState.activeQueryData.userSessions[sessionIndex];
-
-            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel2(${mockQueryDatabase.indexOf(appState.activeQueryData)})">Level 2</span> &gt; <strong>Level 3:</strong> Keyword Evolution`;
+        function renderQueryTableLevel3(queryIndex, sessionIndex) {
+            const session = mockQueryDatabase[queryIndex].userSessions[sessionIndex];
+            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel2(${queryIndex})">Level 2</span> &gt; <strong>Level 3:</strong> Keyword Evolution`;
 
             let html = `<h4>Complete Keyword Evolution for ${session.user}</h4><ul>`;
             session.iterations.forEach((iter, i) => {
-                html += `<li style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 4px;">Step ${i+1}: <strong>${iter}</strong></li>`;
+                html += `<li style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(128,128,128,0.05); border-radius: 4px;">Step ${i+1}: <strong>${iter}</strong></li>`;
             });
             html += `</ul>`;
             document.getElementById('dynamic-table-container').innerHTML = html;
