@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrandUp Digital - Professional SEO & Query Intelligence Tool</title>
+
+    <!-- ========================================== -->
+    <!-- SECTION 2: CSS (STYLES) SECTION            -->
+    <!-- Organized into feature-specific sub-sections-->
+    <!-- ========================================== -->
+    <style>
+        /* --- 2.1: Global & Reset Styles --- */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #f59e0b;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- 2.2: Authentication Forms CSS (Sign Up & Sign In) --- */
+        .auth-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .auth-card h2 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: var(--text-main);
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 2.3rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .auth-switch a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        /* --- 2.3: Packages & Wallet Section CSS --- */
+        .packages-container, .payment-container, .approval-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .package-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        /* --- 2.4: Dashboard & Navigation Section CSS --- */
+        .dashboard-header {
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .hamburger-btn span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-main);
+            border-radius: 2px;
+        }
+
+        /* Side Drawer Menu */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--card-bg);
+            border-left: 1px solid var(--border-color);
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+        }
+
+        .side-menu.open {
+            right: 0;
+        }
+
+        .side-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .side-menu-links {
+            list-style: none;
+            flex: 1;
+        }
+
+        .side-menu-links li {
+            margin-bottom: 1rem;
+        }
+
+        .side-menu-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .side-menu-links a:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .side-menu-links li.sign-out-item {
+            margin-top: auto;
+        }
+
+        .sign-out-btn {
+            color: var(--danger) !important;
+        }
+
+        /* Dashboard Content Area */
+        .dashboard-body {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .search-filters-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.02);
+            cursor: pointer;
+        }
+
+        .admin-badge {
+            background: var(--accent);
+            color: #000;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- SECTION 1: HTML STRUCTURE SECTION          -->
+    <!-- Organized into feature-specific sub-sections-->
+    <!-- ========================================== -->
+
+    <!-- --- 1.1: Sign Up Form Section --- -->
+    <div id="signup-section" class="auth-container">
+        <div class="auth-card">
+            <h2>BrandUp Digital - Sign Up</h2>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signup-name" class="form-control" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="signup-email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signup-password" class="form-control" placeholder="Create password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('signup-password', this)">Show</button>
+                    <span id="signup-pass-error" class="error-msg"></span>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="signup-confirm" class="form-control" placeholder="Confirm password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('signup-confirm', this)">Show</button>
+                    <span id="signup-confirm-error" class="error-msg"></span>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <div class="auth-switch">
+                    Already have an account? <a onclick="switchSection('signin-section')">Sign In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- --- 1.2: Sign In Form Section --- -->
+    <div id="signin-section" class="auth-container hidden">
+        <div class="auth-card">
+            <h2>BrandUp Digital - Sign In</h2>
+            <form id="signin-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="signin-email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="signin-password" class="form-control" placeholder="Enter your password" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('signin-password', this)">Show</button>
+                    <span id="signin-error" class="error-msg"></span>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <div class="auth-switch">
+                    Don't have an account? <a onclick="switchSection('signup-section')">Sign Up</a>
+                    <br><br>
+                    <a style="color: var(--accent);" onclick="loginAsAdmin()">[Quick Demo: Login as Admin]</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- --- 1.3: Package Plans Section --- -->
+    <div id="packages-section" class="packages-container hidden">
+        <h2>Select Your Subscription Package</h2>
+        <p style="color: var(--text-muted); margin-top: 0.5rem;">Choose a plan to power your SEO & query intelligence workflow.</p>
+        <div class="packages-grid">
+            <div class="package-card">
+                <div>
+                    <h3>Monthly Plan</h3>
+                    <div class="package-price">$200</div>
+                    <p style="color: var(--text-muted);">Full access to global search queries & query history for 1 month.</p>
+                </div>
+                <button class="btn" onclick="selectPackage('Monthly Plan', 200)">Choose Monthly</button>
+            </div>
+            <div class="package-card featured">
+                <div>
+                    <h3>6-Month Plan</h3>
+                    <div class="package-price">$1100</div>
+                    <p style="color: var(--text-muted);">Extended access with prioritized deep-dive query variations & export tools.</p>
+                </div>
+                <button class="btn" onclick="selectPackage('6-Month Plan', 1100)">Choose 6-Month</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- 1.4: Bank / Card Link & Payment Section --- -->
+    <div id="payment-section" class="payment-container hidden">
+        <div class="auth-card" style="max-width: 550px;">
+            <h2>Link Master / Visa Card</h2>
+            <p id="selected-package-info" style="color: var(--accent); margin-bottom: 1.5rem; text-align: center;"></p>
+            <form id="payment-form">
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="card-name" class="form-control" placeholder="e.g. Adnan Ahmad" required>
+                </div>
+                <div class="form-group">
+                    <label>Card Number (Master / Visa)</label>
+                    <input type="text" id="card-number" class="form-control" placeholder="16-digit card number" maxlength="19" required>
+                    <span id="card-num-error" class="error-msg"></span>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Expiry (MM/YY)</label>
+                        <input type="text" id="card-expiry" class="form-control" placeholder="MM/YY" maxlength="5" required>
+                        <span id="card-exp-error" class="error-msg"></span>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>CVV</label>
+                        <input type="password" id="card-cvv" class="form-control" placeholder="123" maxlength="4" required>
+                        <span id="card-cvv-error" class="error-msg"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Process Secure Payment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- --- 1.5: Admin Approval Waiting Section --- -->
+    <div id="approval-section" class="approval-container hidden">
+        <div class="auth-card" style="text-align: center;">
+            <h2>Awaiting Admin Approval</h2>
+            <p style="color: var(--text-muted); margin: 1rem 0;">Your payment has been securely routed to the internal escrow wallet. Your account is currently pending admin approval.</p>
+            <div id="admin-control-box" style="margin-top: 2rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px dashed var(--accent); border-radius: 0.5rem;">
+                <p style="font-size: 0.9rem; margin-bottom: 1rem;">[Admin Simulation Panel: Wallet balance updated to <span id="wallet-amount" style="color: var(--accent); font-weight: bold;">$0</span>]</p>
+                <button class="btn" style="background: var(--success);" onclick="adminApproveUser()">Approve User & Unlock Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- --- 1.6: Main Dashboard Section (Level 1, 2, 3 Query Explorer) --- -->
+    <div id="dashboard-section" class="hidden" style="display: flex; flex-direction: column; flex: 1;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <button class="hamburger-btn" onclick="toggleSideMenu()">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="brand-title">BrandUp Digital</div>
+            </div>
+            <div id="user-role-indicator"></div>
+        </header>
+
+        <!-- Side Drawer Menu -->
+        <div id="side-menu" class="side-menu">
+            <div class="side-menu-header">
+                <span>Navigation</span>
+                <button class="close-menu" onclick="toggleSideMenu()">&times;</button>
+            </div>
+            <ul class="side-menu-links">
+                <li><a onclick="navigateToTab('home')">Home</a></li>
+                <li><a onclick="navigateToTab('packages')">Packages</a></li>
+                <li><a onclick="navigateToTab('your-package')">Your Package</a></li>
+                <li><a onclick="navigateToTab('help')">Help</a></li>
+                <li class="sign-out-item"><a class="sign-out-btn" onclick="signOut()">Sign Out</a></li>
+            </ul>
+        </div>
+
+        <!-- Dashboard Body Content -->
+        <div class="dashboard-body">
+            <h3 style="margin-bottom: 0.5rem;">Professional SEO Query Intelligence & Research</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Analyze regional search query data, drill down into individual user histories, and track keyword iteration patterns.</p>
+
+            <!-- Filter Controls Form -->
+            <div class="search-filters-card">
+                <div class="filters-grid">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select Date *</label>
+                        <input type="date" id="filter-date" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select Region (Worldwide) *</label>
+                        <select id="filter-region" class="form-control" onchange="updateCountryList()">
+                            <option value="">-- Choose Region --</option>
+                            <option value="North America">North America</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="Middle East">Middle East</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select Country (Optional)</label>
+                        <select id="filter-country" class="form-control" onchange="updateCityList()">
+                            <option value="">-- All Countries --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select City (Optional)</label>
+                        <select id="filter-city" class="form-control">
+                            <option value="">-- All Cities --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="filters-grid" style="margin-top: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Select Niche *</label>
+                        <select id="filter-niche-select" class="form-control" onchange="handleNicheSelection()">
+                            <option value="">-- Choose Niche --</option>
+                            <option value="Ladies Fashion & Tailoring">Ladies Fashion & Tailoring</option>
+                            <option value="Crypto & Financial Markets">Crypto & Financial Markets</option>
+                            <option value="Web Development & SEO">Web Development & SEO</option>
+                            <option value="Health & Botanical Wellness">Health & Botanical Wellness</option>
+                            <option value="custom">Other (Type Custom Niche)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="custom-niche-wrapper" style="margin-bottom: 0; display: none;">
+                        <label>Enter Custom Niche *</label>
+                        <input type="text" id="filter-custom-niche" class="form-control" placeholder="Type your specific niche">
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
+                        <button class="btn" onclick="executeGoToQueries()">Go to Queries</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Results Area (Drill-down Levels) -->
+            <div id="results-display-area" class="results-box hidden">
+                <div id="breadcrumb-nav" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--accent);"></div>
+                <div id="dynamic-table-container"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- SECTION 3: JAVASCRIPT LOGIC SECTION        -->
+    <!-- Organized into feature-specific sub-sections-->
+    <!-- ========================================== -->
+    <script>
+        /* --- 3.1: Global State & Memory Database --- */
+        const appState = {
+            currentUser: null,
+            selectedPackage: null,
+            packagePrice: 0,
+            walletBalance: 0,
+            isApproved: false,
+            currentLevel: 1, // 1: Aggregated Queries, 2: User Search Sessions, 3: Iterative Keyword History
+            activeQueryData: null
+        };
+
+        // Mock Database for Regional Search Queries & Drill-Downs
+        const mockQueryDatabase = [
+            { query: "lawn suits party wear design 2026", count: 142, userSessions: [
+                { user: "User #101 (Ali)", iterations: ["lawn suits", "party wear lawn suits", "lawn suits party wear design 2026"] },
+                { user: "User #102 (Sara)", iterations: ["party wear 2026", "lawn suits party wear design 2026"] }
+            ]},
+            { query: "bitcoin price analysis today", count: 320, userSessions: [
+                { user: "User #201 (Bilal)", iterations: ["btc price", "bitcoin forecast", "bitcoin price analysis today"] }
+            ]},
+            { query: "wordpress custom theme SEO schema", count: 88, userSessions: [
+                { user: "User #301 (Zain)", iterations: ["wordpress seo", "schema markup plugin", "wordpress custom theme SEO schema"] }
+            ]}
+        ];
+
+        /* --- 3.2: Navigation & Section Switching Logic --- */
+        function switchSection(sectionId) {
+            document.querySelectorAll('body > div:not(.side-menu)').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function togglePassword(fieldId, btnElement) {
+            const field = document.getElementById(fieldId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                btnElement.textContent = 'Hide';
+            } else {
+                field.type = 'password';
+                btnElement.textContent = 'Show';
+            }
+        }
+
+        function toggleSideMenu() {
+            document.getElementById('side-menu').classList.toggle('open');
+        }
+
+        function navigateToTab(tabName) {
+            toggleSideMenu();
+            if (tabName === 'home') {
+                alert('You are already on the Home Dashboard.');
+            } else if (tabName === 'packages' || tabName === 'your-package') {
+                alert(`Current Active Package: ${appState.selectedPackage || 'None Selected'} | Price: $${appState.packagePrice}`);
+            } else if (tabName === 'help') {
+                alert('Help & Support: Contact admin@brandupdigital.com for assistance.');
+            }
+        }
+
+        function signOut() {
+            appState.currentUser = null;
+            appState.isApproved = false;
+            document.getElementById('side-menu').classList.remove('open');
+            switchSection('signin-section');
+        }
+
+        /* --- 3.3: Authentication Validation Logic --- */
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const pass = document.getElementById('signup-password').value;
+            const confirm = document.getElementById('signup-confirm').value;
+
+            if (pass !== confirm) {
+                document.getElementById('signup-confirm-error').textContent = 'Passwords do not match!';
+                return;
+            } else {
+                document.getElementById('signup-confirm-error').textContent = '';
+            }
+
+            appState.currentUser = { name, email };
+            alert('Sign Up Successful! Please select your subscription package.');
+            switchSection('packages-section');
+        });
+
+        document.getElementById('signin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value;
+            const pass = document.getElementById('signin-password').value;
+
+            if (!email || !pass) {
+                document.getElementById('signin-error').textContent = 'Email and password are required.';
+                return;
+            }
+
+            appState.currentUser = { name: 'Adnan Ahmad', email };
+            if (!appState.selectedPackage) {
+                switchSection('packages-section');
+            } else if (!appState.isApproved) {
+                switchSection('approval-section');
+            } else {
+                switchSection('dashboard-section');
+            }
+        });
+
+        function loginAsAdmin() {
+            appState.currentUser = { name: 'Admin', email: 'admin@brandup.com' };
+            appState.selectedPackage = '6-Month Plan';
+            appState.packagePrice = 1100;
+            appState.isApproved = true;
+            switchSection('dashboard-section');
+            document.getElementById('user-role-indicator').innerHTML = '<span class="admin-badge">ADMIN MODE</span>';
+        }
+
+        /* --- 3.4: Package Selection & Card Payment Logic --- */
+        function selectPackage(packageName, price) {
+            appState.selectedPackage = packageName;
+            appState.packagePrice = price;
+            document.getElementById('selected-package-info').textContent = `Selected Plan: ${packageName} ($${price})`;
+            switchSection('payment-section');
+        }
+
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const cardNum = document.getElementById('card-number').value.replace(/\s+/g, '');
+            const expiry = document.getElementById('card-expiry').value;
+            const cvv = document.getElementById('card-cvv').value;
+
+            // Rigorous Error Validation
+            let isValid = true;
+            if (cardNum.length < 15 || isNaN(cardNum)) {
+                document.getElementById('card-num-error').textContent = 'Invalid card number format (Must be 15-16 digits).';
+                isValid = false;
+            } else {
+                document.getElementById('card-num-error').textContent = '';
+            }
+
+            if (!expiry.match(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/)) {
+                document.getElementById('card-exp-error').textContent = 'Invalid expiry format (MM/YY).';
+                isValid = false;
+            } else {
+                document.getElementById('card-exp-error').textContent = '';
+            }
+
+            if (cvv.length < 3 || isNaN(cvv)) {
+                document.getElementById('card-cvv-error').textContent = 'Invalid CVV.';
+                isValid = false;
+            } else {
+                document.getElementById('card-cvv-error').textContent = '';
+            }
+
+            if (!isValid) return;
+
+            // Automatic Wallet Transfer to Admin Escrow
+            appState.walletBalance += appState.packagePrice;
+            document.getElementById('wallet-amount').textContent = `$${appState.walletBalance}`;
+            
+            alert('Payment processed successfully! Funds transferred to admin wallet. Awaiting admin approval.');
+            switchSection('approval-section');
+        });
+
+        function adminApproveUser() {
+            appState.isApproved = true;
+            alert('Admin approved successfully! Unlocking Main Dashboard.');
+            switchSection('dashboard-section');
+            document.getElementById('user-role-indicator').innerHTML = '<span class="admin-badge">ACTIVE SUBSCRIBER</span>';
+        }
+
+        /* --- 3.5: Regional Cascading & Niche Selection Logic --- */
+        const regionData = {
+            "North America": { countries: ["United States", "Canada"], cities: { "United States": ["New York", "Los Angeles"], "Canada": ["Toronto", "Vancouver"] } },
+            "Asia": { countries: ["Pakistan", "India", "UAE"], cities: { "Pakistan": ["Lahore", "Karachi", "Sialkot"], "India": ["Mumbai", "Delhi"], "Dubai": ["Dubai"] } },
+            "Europe": { countries: ["United Kingdom", "Germany"], cities: { "United Kingdom": ["London", "Manchester"], "Germany": ["Berlin", "Munich"] } },
+            "Middle East": { countries: ["Saudi Arabia", "UAE"], cities: { "Saudi Arabia": ["Riyadh", "Jeddah"], "UAE": ["Dubai", "Abu Dhabi"] } }
+        };
+
+        function updateCountryList() {
+            const region = document.getElementById('filter-region').value;
+            const countrySelect = document.getElementById('filter-country');
+            countrySelect.innerHTML = '<option value="">-- All Countries --</option>';
+            document.getElementById('filter-city').innerHTML = '<option value="">-- All Cities --</option>';
+
+            if (region && regionData[region]) {
+                regionData[region].countries.forEach(country => {
+                    countrySelect.innerHTML += `<option value="${country}">${country}</option>`;
+                });
+            }
+        }
+
+        function updateCityList() {
+            const region = document.getElementById('filter-region').value;
+            const country = document.getElementById('filter-country').value;
+            const citySelect = document.getElementById('filter-city');
+            citySelect.innerHTML = '<option value="">-- All Cities --</option>';
+
+            if (region && country && regionData[region].cities[country]) {
+                regionData[region].cities[country].forEach(city => {
+                    citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+                });
+            }
+        }
+
+        function handleNicheSelection() {
+            const val = document.getElementById('filter-niche-select').value;
+            const customWrapper = document.getElementById('custom-niche-wrapper');
+            if (val === 'custom') {
+                customWrapper.style.display = 'block';
+            } else {
+                customWrapper.style.display = 'none';
+            }
+        }
+
+        /* --- 3.6: Multi-Tier Query Drill-Down Engine --- */
+        function executeGoToQueries() {
+            const date = document.getElementById('filter-date').value;
+            const region = document.getElementById('filter-region').value;
+            const nicheSelect = document.getElementById('filter-niche-select').value;
+
+            if (!date) {
+                alert('Date selection is mandatory!');
+                return;
+            }
+            if (!region) {
+                alert('Region selection is mandatory!');
+                return;
+            }
+            if (!nicheSelect) {
+                alert('Niche selection is mandatory!');
+                return;
+            }
+
+            appState.currentLevel = 1;
+            renderQueryTableLevel1();
+        }
+
+        function renderQueryTableLevel1() {
+            const container = document.getElementById('results-display-area');
+            container.classList.remove('hidden');
+            document.getElementById('breadcrumb-nav').innerHTML = '<strong>Level 1:</strong> Aggregated Search Queries (Click any query for individual user sessions)';
+            
+            let html = `<table><thead><tr><th>Search Query</th><th>Search Frequency</th></tr></thead><tbody>`;
+            mockQueryDatabase.forEach((item, index) => {
+                html += `<tr onclick="renderQueryTableLevel2(${index})"><td>${item.query}</td><td>${item.count} searches</td></tr>`;
+            });
+            html += `</tbody></table>`;
+            document.getElementById('dynamic-table-container').innerHTML = html;
+        }
+
+        function renderQueryTableLevel2(queryIndex) {
+            appState.currentLevel = 2;
+            appState.activeQueryData = mockQueryDatabase[queryIndex];
+            
+            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <strong>Level 2:</strong> Individual User Sessions for "${appState.activeQueryData.query}"`;
+
+            let html = `<table><thead><tr><th>User Session</th><th>Iteration Count</th></tr></thead><tbody>`;
+            appState.activeQueryData.userSessions.forEach((session, sIndex) => {
+                html += `<tr onclick="renderQueryTableLevel3(${sIndex})"><td>${session.user}</td><td>${session.iterations.length} Keyword Variations</td></tr>`;
+            });
+            html += `</tbody></table>`;
+            document.getElementById('dynamic-table-container').innerHTML = html;
+        }
+
+        function renderQueryTableLevel3(sessionIndex) {
+            appState.currentLevel = 3;
+            const session = appState.activeQueryData.userSessions[sessionIndex];
+
+            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel2(${mockQueryDatabase.indexOf(appState.activeQueryData)})">Level 2</span> &gt; <strong>Level 3:</strong> Iterative Query Variations`;
+
+            let html = `<h4>Complete Keyword Evolution for ${session.user}</h4><ul>`;
+            session.iterations.forEach((iter, i) => {
+                html += `<li style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 4px;">Step ${i+1}: <strong>${iter}</strong></li>`;
+            });
+            html += `</ul>`;
+            document.getElementById('dynamic-table-container').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
