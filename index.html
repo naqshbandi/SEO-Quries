@@ -10,7 +10,6 @@
     <!-- Organized into feature-specific sub-sections-->
     <!-- ========================================== -->
     <style>
-        /* --- 2.1: Global & Reset Styles --- */
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
@@ -43,13 +42,16 @@
             display: none !important;
         }
 
-        /* --- 2.2: Authentication Forms CSS (Sign Up & Sign In) --- */
-        .auth-container {
+        .auth-container, .packages-container, .payment-container, .approval-container {
             flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .auth-card {
@@ -144,19 +146,6 @@
             display: block;
         }
 
-        /* --- 2.3: Packages & Wallet Section CSS --- */
-        .packages-container, .payment-container, .approval-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
         .packages-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -188,7 +177,6 @@
             margin: 1rem 0;
         }
 
-        /* --- 2.4: Dashboard & Navigation Section CSS --- */
         .dashboard-header {
             background: var(--card-bg);
             border-bottom: 1px solid var(--border-color);
@@ -224,7 +212,6 @@
             border-radius: 2px;
         }
 
-        /* Side Drawer Menu */
         .side-menu {
             position: fixed;
             top: 0;
@@ -294,7 +281,6 @@
             color: var(--danger) !important;
         }
 
-        /* Dashboard Content Area */
         .dashboard-body {
             padding: 2rem;
             max-width: 1200px;
@@ -360,7 +346,6 @@
 
     <!-- ========================================== -->
     <!-- SECTION 1: HTML STRUCTURE SECTION          -->
-    <!-- Organized into feature-specific sub-sections-->
     <!-- ========================================== -->
 
     <!-- --- 1.1: Sign Up Form Section --- -->
@@ -414,8 +399,6 @@
                 <button type="submit" class="btn">Sign In</button>
                 <div class="auth-switch">
                     Don't have an account? <a onclick="switchSection('signup-section')">Sign Up</a>
-                    <br><br>
-                    <a style="color: var(--accent);" onclick="loginAsAdmin()">[Quick Demo: Login as Admin]</a>
                 </div>
             </form>
         </div>
@@ -477,21 +460,28 @@
         </div>
     </div>
 
-    <!-- --- 1.5: Admin Approval Waiting Section --- -->
+    <!-- --- 1.5: Admin Approval Waiting Section (For Regular Users) --- -->
     <div id="approval-section" class="approval-container hidden">
         <div class="auth-card" style="text-align: center;">
             <h2>Awaiting Admin Approval</h2>
-            <p style="color: var(--text-muted); margin: 1rem 0;">Your payment has been securely routed to the internal escrow wallet. Your account is currently pending admin approval.</p>
-            <div id="admin-control-box" style="margin-top: 2rem; padding: 1rem; background: rgba(245, 158, 11, 0.1); border: 1px dashed var(--accent); border-radius: 0.5rem;">
-                <p style="font-size: 0.9rem; margin-bottom: 1rem;">[Admin Simulation Panel: Wallet balance updated to <span id="wallet-amount" style="color: var(--accent); font-weight: bold;">$0</span>]</p>
-                <button class="btn" style="background: var(--success);" onclick="adminApproveUser()">Approve User & Unlock Dashboard</button>
-            </div>
+            <p style="color: var(--text-muted); margin: 1rem 0;">Your payment has been securely routed to the internal escrow wallet. Your account is currently pending admin approval. Please wait for the administrator to review and approve your subscription.</p>
         </div>
     </div>
 
-    <!-- --- 1.6: Main Dashboard Section (Level 1, 2, 3 Query Explorer) --- -->
+    <!-- --- 1.6: Admin Control Center Section (For elzi1@mai.com) --- -->
+    <div id="admin-panel-section" class="auth-container hidden" style="max-width: 800px; margin: 0 auto;">
+        <div class="auth-card" style="width: 100%;">
+            <h2>Admin Control Center</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Escrow Wallet Balance: <span id="admin-wallet-display" style="color: var(--accent); font-weight: bold;">$0</span></p>
+            <div id="pending-users-list">
+                <p style="color: var(--text-muted);">No pending user requests right now.</p>
+            </div>
+            <button class="btn" style="margin-top: 1.5rem; background: var(--danger);" onclick="signOut()">Admin Sign Out</button>
+        </div>
+    </div>
+
+    <!-- --- 1.7: Main Dashboard Section --- -->
     <div id="dashboard-section" class="hidden" style="display: flex; flex-direction: column; flex: 1;">
-        <!-- Header -->
         <header class="dashboard-header">
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <button class="hamburger-btn" onclick="toggleSideMenu()">
@@ -502,7 +492,6 @@
             <div id="user-role-indicator"></div>
         </header>
 
-        <!-- Side Drawer Menu -->
         <div id="side-menu" class="side-menu">
             <div class="side-menu-header">
                 <span>Navigation</span>
@@ -517,12 +506,10 @@
             </ul>
         </div>
 
-        <!-- Dashboard Body Content -->
         <div class="dashboard-body">
             <h3 style="margin-bottom: 0.5rem;">Professional SEO Query Intelligence & Research</h3>
             <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem;">Analyze regional search query data, drill down into individual user histories, and track keyword iteration patterns.</p>
 
-            <!-- Filter Controls Form -->
             <div class="search-filters-card">
                 <div class="filters-grid">
                     <div class="form-group" style="margin-bottom: 0;">
@@ -575,7 +562,6 @@
                 </div>
             </div>
 
-            <!-- Dynamic Results Area (Drill-down Levels) -->
             <div id="results-display-area" class="results-box hidden">
                 <div id="breadcrumb-nav" style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--accent);"></div>
                 <div id="dynamic-table-container"></div>
@@ -586,21 +572,21 @@
 
     <!-- ========================================== -->
     <!-- SECTION 3: JAVASCRIPT LOGIC SECTION        -->
-    <!-- Organized into feature-specific sub-sections-->
     <!-- ========================================== -->
     <script>
-        /* --- 3.1: Global State & Memory Database --- */
+        const ADMIN_EMAIL = "elzi1@mai.com";
+
         const appState = {
             currentUser: null,
             selectedPackage: null,
             packagePrice: 0,
             walletBalance: 0,
             isApproved: false,
-            currentLevel: 1, // 1: Aggregated Queries, 2: User Search Sessions, 3: Iterative Keyword History
-            activeQueryData: null
+            currentLevel: 1,
+            activeQueryData: null,
+            pendingUser: null
         };
 
-        // Mock Database for Regional Search Queries & Drill-Downs
         const mockQueryDatabase = [
             { query: "lawn suits party wear design 2026", count: 142, userSessions: [
                 { user: "User #101 (Ali)", iterations: ["lawn suits", "party wear lawn suits", "lawn suits party wear design 2026"] },
@@ -614,7 +600,6 @@
             ]}
         ];
 
-        /* --- 3.2: Navigation & Section Switching Logic --- */
         function switchSection(sectionId) {
             document.querySelectorAll('body > div:not(.side-menu)').forEach(el => {
                 el.classList.add('hidden');
@@ -655,7 +640,6 @@
             switchSection('signin-section');
         }
 
-        /* --- 3.3: Authentication Validation Logic --- */
         document.getElementById('signup-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('signup-name').value;
@@ -671,8 +655,14 @@
             }
 
             appState.currentUser = { name, email };
-            alert('Sign Up Successful! Please select your subscription package.');
-            switchSection('packages-section');
+            
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                appState.isApproved = true;
+                switchSection('admin-panel-section');
+                updateAdminDashboard();
+            } else {
+                switchSection('packages-section');
+            }
         });
 
         document.getElementById('signin-form').addEventListener('submit', function(e) {
@@ -685,8 +675,13 @@
                 return;
             }
 
-            appState.currentUser = { name: 'Adnan Ahmad', email };
-            if (!appState.selectedPackage) {
+            appState.currentUser = { name: email.split('@')[0], email };
+
+            if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                appState.isApproved = true;
+                switchSection('admin-panel-section');
+                updateAdminDashboard();
+            } else if (!appState.selectedPackage) {
                 switchSection('packages-section');
             } else if (!appState.isApproved) {
                 switchSection('approval-section');
@@ -695,16 +690,6 @@
             }
         });
 
-        function loginAsAdmin() {
-            appState.currentUser = { name: 'Admin', email: 'admin@brandup.com' };
-            appState.selectedPackage = '6-Month Plan';
-            appState.packagePrice = 1100;
-            appState.isApproved = true;
-            switchSection('dashboard-section');
-            document.getElementById('user-role-indicator').innerHTML = '<span class="admin-badge">ADMIN MODE</span>';
-        }
-
-        /* --- 3.4: Package Selection & Card Payment Logic --- */
         function selectPackage(packageName, price) {
             appState.selectedPackage = packageName;
             appState.packagePrice = price;
@@ -718,10 +703,9 @@
             const expiry = document.getElementById('card-expiry').value;
             const cvv = document.getElementById('card-cvv').value;
 
-            // Rigorous Error Validation
             let isValid = true;
             if (cardNum.length < 15 || isNaN(cardNum)) {
-                document.getElementById('card-num-error').textContent = 'Invalid card number format (Must be 15-16 digits).';
+                document.getElementById('card-num-error').textContent = 'Invalid card number format.';
                 isValid = false;
             } else {
                 document.getElementById('card-num-error').textContent = '';
@@ -743,22 +727,39 @@
 
             if (!isValid) return;
 
-            // Automatic Wallet Transfer to Admin Escrow
             appState.walletBalance += appState.packagePrice;
-            document.getElementById('wallet-amount').textContent = `$${appState.walletBalance}`;
-            
-            alert('Payment processed successfully! Funds transferred to admin wallet. Awaiting admin approval.');
+            appState.pendingUser = appState.currentUser;
+
+            alert('Payment processed successfully! Awaiting admin approval.');
             switchSection('approval-section');
         });
 
-        function adminApproveUser() {
-            appState.isApproved = true;
-            alert('Admin approved successfully! Unlocking Main Dashboard.');
-            switchSection('dashboard-section');
-            document.getElementById('user-role-indicator').innerHTML = '<span class="admin-badge">ACTIVE SUBSCRIBER</span>';
+        function updateAdminDashboard() {
+            document.getElementById('admin-wallet-display').textContent = `$${appState.walletBalance}`;
+            const listContainer = document.getElementById('pending-users-list');
+
+            if (appState.pendingUser && !appState.isApprovedUser) {
+                listContainer.innerHTML = `
+                    <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>${appState.pendingUser.name}</strong> (${appState.pendingUser.email})<br>
+                            <small style="color: var(--text-muted);">Package: ${appState.selectedPackage} ($${appState.packagePrice})</small>
+                        </div>
+                        <button class="btn" style="width: auto; padding: 0.5rem 1rem; background: var(--success);" onclick="approveUserByAdmin()">Approve</button>
+                    </div>
+                `;
+            } else {
+                listContainer.innerHTML = `<p style="color: var(--text-muted);">No pending user requests right now.</p>`;
+            }
         }
 
-        /* --- 3.5: Regional Cascading & Niche Selection Logic --- */
+        function approveUserByAdmin() {
+            appState.isApprovedUser = true;
+            appState.walletBalance += 0; // funds secured
+            alert('User approved successfully!');
+            updateAdminDashboard();
+        }
+
         const regionData = {
             "North America": { countries: ["United States", "Canada"], cities: { "United States": ["New York", "Los Angeles"], "Canada": ["Toronto", "Vancouver"] } },
             "Asia": { countries: ["Pakistan", "India", "UAE"], cities: { "Pakistan": ["Lahore", "Karachi", "Sialkot"], "India": ["Mumbai", "Delhi"], "Dubai": ["Dubai"] } },
@@ -802,22 +803,13 @@
             }
         }
 
-        /* --- 3.6: Multi-Tier Query Drill-Down Engine --- */
         function executeGoToQueries() {
             const date = document.getElementById('filter-date').value;
             const region = document.getElementById('filter-region').value;
             const nicheSelect = document.getElementById('filter-niche-select').value;
 
-            if (!date) {
-                alert('Date selection is mandatory!');
-                return;
-            }
-            if (!region) {
-                alert('Region selection is mandatory!');
-                return;
-            }
-            if (!nicheSelect) {
-                alert('Niche selection is mandatory!');
+            if (!date || !region || !nicheSelect) {
+                alert('Date, Region, and Niche selections are mandatory!');
                 return;
             }
 
@@ -828,7 +820,7 @@
         function renderQueryTableLevel1() {
             const container = document.getElementById('results-display-area');
             container.classList.remove('hidden');
-            document.getElementById('breadcrumb-nav').innerHTML = '<strong>Level 1:</strong> Aggregated Search Queries (Click any query for individual user sessions)';
+            document.getElementById('breadcrumb-nav').innerHTML = '<strong>Level 1:</strong> Aggregated Search Queries';
             
             let html = `<table><thead><tr><th>Search Query</th><th>Search Frequency</th></tr></thead><tbody>`;
             mockQueryDatabase.forEach((item, index) => {
@@ -842,11 +834,11 @@
             appState.currentLevel = 2;
             appState.activeQueryData = mockQueryDatabase[queryIndex];
             
-            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <strong>Level 2:</strong> Individual User Sessions for "${appState.activeQueryData.query}"`;
+            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <strong>Level 2:</strong> User Sessions`;
 
-            let html = `<table><thead><tr><th>User Session</th><th>Iteration Count</th></tr></thead><tbody>`;
+            let html = `<table><thead><tr><th>User Session</th><th>Iterations</th></tr></thead><tbody>`;
             appState.activeQueryData.userSessions.forEach((session, sIndex) => {
-                html += `<tr onclick="renderQueryTableLevel3(${sIndex})"><td>${session.user}</td><td>${session.iterations.length} Keyword Variations</td></tr>`;
+                html += `<tr onclick="renderQueryTableLevel3(${sIndex})"><td>${session.user}</td><td>${session.iterations.length} Variations</td></tr>`;
             });
             html += `</tbody></table>`;
             document.getElementById('dynamic-table-container').innerHTML = html;
@@ -856,7 +848,7 @@
             appState.currentLevel = 3;
             const session = appState.activeQueryData.userSessions[sessionIndex];
 
-            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel2(${mockQueryDatabase.indexOf(appState.activeQueryData)})">Level 2</span> &gt; <strong>Level 3:</strong> Iterative Query Variations`;
+            document.getElementById('breadcrumb-nav').innerHTML = `<span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel1()">Level 1</span> &gt; <span style="cursor:pointer; color:var(--primary);" onclick="renderQueryTableLevel2(${mockQueryDatabase.indexOf(appState.activeQueryData)})">Level 2</span> &gt; <strong>Level 3:</strong> Keyword Evolution`;
 
             let html = `<h4>Complete Keyword Evolution for ${session.user}</h4><ul>`;
             session.iterations.forEach((iter, i) => {
