@@ -496,6 +496,11 @@
         <div class="auth-card" style="text-align: center;">
             <h2>Waiting for Admin Approval</h2>
             <p style="color: var(--text-muted); margin: 1rem 0;">Your payment screenshot has been sent. Please wait while the admin verifies your payment and approves your account.</p>
+        
+<button onclick="localStorage.clear(); window.location.reload();" style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%;">
+  (Sign Out)
+</button>
+        
         </div>
     </div>
 
@@ -526,9 +531,7 @@
             </div>
             <div id="user-role-indicator"><span style="color: var(--success); font-weight: bold; font-size: 0.9rem;">ACTIVE SUBSCRIBER</span></div>
 
-<button onclick="localStorage.clear(); window.location.reload();" style="background-color: #ff4d4d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%;">
-Sign out
-</button>
+
 
             
         </header>
