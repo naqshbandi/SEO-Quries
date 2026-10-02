@@ -841,12 +841,13 @@
         }
 
         function approveUserByAdmin() {
-            appState.isApprovedUser = true;
-            appState.walletBalance += appState.pendingUser.price;
-            saveSessionState(true, appState.pendingUser.package);
-            alert('User approved successfully! User can now access the dashboard.');
-            switchSection('dashboard-section');
-        }
+    appState.isApprovedUser = true;
+    appState.walletBalance += appState.pendingDepositAmount;
+    saveSessionState(true, appState.walletBalance);
+    alert('User approved successfully!');
+    switchSection('dashboard-section');
+}
+
 
         function openModal(imgSrc) {
             document.getElementById('modal-img').src = imgSrc;
